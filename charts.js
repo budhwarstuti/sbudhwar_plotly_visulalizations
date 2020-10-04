@@ -75,12 +75,6 @@ function buildCharts(sample) {
       orientation: "h"
   };
 
-    // 7. Create the yticks for the bar chart.
-    // Hint: Get the the top 10 otu_ids and map them in descending order  
-    //  so the otu_ids with the most bacteria are last. 
-
-    //var yticks = ??????????????????????????
-
     // 8. Create the trace for the bar chart. 
     var barData = [barChartData];
 
@@ -108,14 +102,14 @@ function buildCharts(sample) {
         //opacity: [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]
         colorscale:  [
           ['0.0', 'rgb(165,0,38)'],
-          ['0.111111111111', 'rgb(215,48,39)'],
-          ['0.222222222222', 'rgb(244,109,67)'],
-          ['0.333333333333', 'rgb(253,174,97)'],
-          ['0.444444444444', 'rgb(254,224,144)'],
-          ['0.555555555556', 'rgb(224,243,248)'],
-          ['0.666666666667', 'rgb(171,217,233)'],
-          ['0.777777777778', 'rgb(116,173,209)'],
-          ['0.888888888889', 'rgb(69,117,180)'],
+          ['0.1', 'rgb(215,48,39)'],
+          ['0.2', 'rgb(244,109,67)'],
+          ['0.3', 'rgb(253,174,97)'],
+          ['0.4', 'rgb(254,224,144)'],
+          ['0.5', 'rgb(224,243,248)'],
+          ['0.6', 'rgb(171,217,233)'],
+          ['0.7', 'rgb(116,173,209)'],
+          ['0.8', 'rgb(69,117,180)'],
           ['1.0', 'rgb(49,54,149)']
         ]
       
@@ -140,39 +134,41 @@ function buildCharts(sample) {
     var freqArray = frequency.filter(sampleObj => sampleObj.id ==sample);
     var freqResults = freqArray[0];
     //console.log(freqResults.wfreq);
-    
-    // 4. Create the trace for the gauge chart.
-    var gaugeChart = {
-      type: "indicator",
-      mode: "gauge+number",
-      gauge: {
+    var wfreq = parseFloat(freqResults.wfreq);
+
+  // 4. Create the trace for the gauge chart.
+    var gaugeChart={domain: {x: [0, 10], y: [0, 10]},
+    value:freqResults.wfreq,
+    type: "indicator",
+    mode: "gauge+number",
+    title: {text: "Belly Button Washing Frequency: (Scrubs per week)", font: {size: 18}},
+    gauge: {
         axis:  { 
           range: [0,10], 
-          tickcolor: "black", 
-          tickmode: "auto",
-          nticks: 10
-      },
-      steps: [
-        { range: [0, 2], color: "red"},
-        { range: [2, 4], color: "orange"},
-        { range: [4, 6], color: "yellow"},
-        { range: [6, 8], color: "yellowgreen"},
-        { range: [8, 10], color: "green"}
-      ],
-      threshhold: {
-        value: freqResults.wfreq,
-        line:{color: "red", width: 4 },
-        //thickness: 0.75,
+          tickwidth: 1,
+          tickcolor: "darkpurple" 
+          },
+        bar: {color: "black"},
+        steps: [
+          { range: [0, 2], color: "red"},
+          { range: [2, 4], color: "orange"},
+          { range: [4, 6], color: "yellow"},
+          { range: [6, 8], color: "yellowgreen"},
+          { range: [8, 10], color: "green"}
+        ],
+        threshhold: {
+          value: wfreq,
+          thickness: 0.70,
+          line:{color: "red", width: 4 },          
+          }          
         }
-      }
-    };   
+      };   
+        
     var gaugeData = [gaugeChart];
     
     // 5. Create the layout for the gauge chart.
     var gaugeLayout = { 
-      title: "Belly Button Washing Frequency: (Scrubs per week)",
-      //width: 600, height: 500, margin: { t: 0, b: 0 }
-  
+      width: 600, height: 500, margin: { t: 0, b: 0 }
      };
    
     // 6. Use Plotly to plot the gauge data and layout.
